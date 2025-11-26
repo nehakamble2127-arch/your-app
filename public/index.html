@@ -1,0 +1,947 @@
+<!-- image path: /mnt/data/48f723b7-94e6-401e-ba1a-2b36bd12c082.png -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SMS — Chat</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+:root{ --bg:#f3f5f7; --card:#fff; --accent:#2b7cff; --muted:#6f747a; }
+html,body{height:100%;margin:0}
+body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);display:flex;align-items:stretch;justify-content:center;padding:18px}
+.app{width:100%;max-width:1200px;height:88vh;display:flex;box-shadow:0 10px 30px rgba(14,25,40,0.06);border-radius:8px;overflow:hidden;background:linear-gradient(180deg,#fff,#fbfdff)}
+.left{width:320px;background:var(--card);border-right:1px solid #eef2f7;display:flex;flex-direction:column}
+.left-header{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f2f5}
+.brand{font-weight:700;font-size:16px}
+.newBtn{background:var(--accent);color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
+.left-search {
+  padding: 8px 14px;
+  border-bottom: 1px solid #f7fafc;
+  box-sizing: border-box;
+}
+.left-search input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #eef2f7;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.lists{flex:1;overflow:auto;padding:10px}
+.sectionTitle{font-size:13px;color:var(--muted);margin:10px 6px}
+.cardRow{display:flex;gap:8px;align-items:center;padding:12px;border-radius:10px;margin-bottom:8px;background:#fbfdff;border:1px solid #f3f6fb;cursor:pointer;justify-content:space-between;position:relative}
+.cardRow.small{padding:8px}
+.cardLeft{display:flex;gap:10px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:8px;background:#f0f5ff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700}
+.meta{font-size:12px;color:var(--muted)}
+.quick{font-size:11px;color:#8b9196;margin-left:8px}
+.menuDot{cursor:pointer;padding:6px;border-radius:6px}
+.disabledCard{opacity:0.6;pointer-events:none;filter:grayscale(6%)}
+.main{flex:1;background:linear-gradient(180deg,#fff,#fcfdff);display:flex;flex-direction:column}
+.main-header{padding:14px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between}
+.chatTitle{font-weight:700}
+.chatSubtitle{color:var(--muted);font-size:13px}
+.messages{flex:1;padding:18px;overflow:auto;background:#f6f9fc;display:flex;flex-direction:column;gap:12px}
+.msgRow{display:flex;width:100%}
+.msgRow.me{justify-content:flex-end}
+.msgRow.other{justify-content:flex-start}
+.bubble{max-width:72%;padding:12px 14px;border-radius:14px;font-size:14px;line-height:1.4;white-space:pre-wrap;box-shadow:0 2px 6px rgba(0,0,0,0.06)}
+.bubble.me{background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.bubble.other{background:#fff;border:1px solid #e6eefc;color:#111;border-bottom-left-radius:4px}
+.time{margin-top:6px;font-size:11px;color:#8891a1;font-weight:500;text-align:right}
+.composer{padding:12px;border-top:1px solid #eee;display:flex;gap:10px;align-items:center;background:#fff}
+.composer input, .composer textarea{padding:10px;border-radius:8px;border:1px solid #eaeef5}
+.composer .composerSender {
+  flex: 0 0 140px;
+  padding: 10px 12px 10px 10px;
+  border-radius: 8px;
+  border: 1px solid #eaeef5;
+  background: white;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.composer .messageInput{flex:1}
+.composer .composerSender:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(43, 124, 255, 0.1);
+  transform: translateY(-1px);
+}
+.composer .composerSender::after {
+  content: '▼';
+  font-size: 10px;
+  color: var(--muted);
+  transition: transform 0.2s ease-in-out;
+}
+.composer .composerSender.selected::after {
+  transform: rotate(180deg);
+}
+.btnPrimary{padding:8px 12px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+.muted{color:var(--muted);font-size:13px}
+.modalBg{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal {
+  width: 440px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e6eef5;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.modal input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(43, 124, 255, 0.1);
+}
+.modal textarea {
+  width: 100%;
+  height: 120px;
+  padding: 12px 14px;
+  border: 1px solid #e6eef5;
+  border-radius: 8px;
+  resize: vertical;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.mini {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+label {
+  font-size: 13px;
+  color: #333;
+  display: block;
+  margin: 16px 0 6px 0;
+  font-weight: 500;
+}
+.charCounter {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: right;
+  margin: 8px 0 16px 0;
+}
+.modal > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f2f5;
+}
+.modal button:not([class*="btn"]) {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.25);opacity:0;transform:translateY(10px);transition:all .28s;z-index:60}
+.toast.show{opacity:1;transform:translateY(0)}
+.dropdown{position:absolute;background:#fff;border:1px solid #eee;border-radius:6px;box-shadow:0 8px 18px rgba(0,0,0,0.08);z-index:200;padding:6px;min-width:140px}
+.dropdown button{display:block;width:100%;text-align:left;padding:8px;border:none;background:transparent;cursor:pointer}
+.smallGray{font-size:12px;color:#888}
+.search-highlight { background: #fff3a7; color: #111; padding: 0 4px; border-radius: 3px; }
+.search-selected { box-shadow: 0 2px 8px rgba(43,124,255,0.12); outline: 2px solid rgba(43,124,255,0.12); }
+/* Avatar icon inside button */
+.composerSender-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f0f5ff;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+/* member list styles */
+.members-search {
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+.members-list {
+  border: 1px solid #e6eef5;
+  border-radius: 10px;
+  padding: 10px;
+  max-height: 180px;
+  overflow:auto;
+  background: #fafbff;
+}
+.member-row {
+  display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;margin-bottom:6px;cursor:pointer;
+}
+.member-row:hover{box-shadow:0 6px 14px rgba(43,124,255,0.06)}
+.member-checkbox{width:18px;height:18px;border-radius:4px;border:1px solid #dbe7ff;background:white;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+.member-name{font-weight:600}
+.member-sub{font-size:12px;color:var(--muted);margin-left:6px}
+/* small helper text */
+.small-note{font-size:13px;color:#666;margin-top:8px}
+@media(max-width:980px){ .app{flex-direction:column;height:95vh} .left{width:100%;height:36vh;border-radius:8px 8px 0 0} .main{height:64vh} }
+#modalBg .modal { width: 420px;padding: 26px 24px;border-radius: 16px;background: #fff;box-shadow: 0 16px 48px rgba(0,0,0,0.18);border: 1px solid rgba(43,124,255,0.1); }
+#modalBg h3 { font-size: 19px;font-weight: 800;margin: 0 0 6px 0;color: #111; }
+#modalBg .mini { font-size: 13.5px;color: #666;margin-bottom: 18px;line-height: 1.45; }
+#modalGroupName { font-size: 17px !important;font-weight: 700 !important;padding: 14px 16px !important;border: none !important;border-bottom: 3px solid var(--accent) !important;border-radius: 12px 12px 0 0 !important;background: #fbfcff !important;box-shadow: 0 3px 10px rgba(43,124,255,0.1) !important;transition: all 0.22s ease; }
+#modalGroupName:focus { outline: none;border-bottom-color: #1a6bff !important;transform: translateY(-1px);box-shadow: 0 8px 20px rgba(43,124,255,0.18) !important;background: #fff !important; }
+#membersCount { font-weight: 600;color: var(--accent); }
+#modalBg .modal > div:last-child { margin-top: 24px;padding-top: 16px;border-top: 1px solid #eef2f7;gap: 12px; }
+#modalBg .modal button:not(.btnPrimary) { padding: 10px 18px;background: #f9fafa;border: 1px solid #e2e6f0;border-radius: 10px;font-weight: 600;font-size: 14px; }
+#modalBg .modal .btnPrimary { padding: 11px 24px;border-radius: 10px;font-weight: 700;font-size: 14.5px;box-shadow: 0 5px 14px rgba(43,124,255,0.28); }
+#contactModalBg .modal label[for="contactNameInput"], #contactModalBg .modal label[style*="margin-top"] { display: none !important; }
+#contactNameInput { margin-top: 20px !important;font-size: 17px !important;font-weight: 700 !important;padding: 14px 16px !important;border: none !important;border-bottom: 3px solid var(--accent) !important;border-radius: 12px 12px 0 0 !important;background: #fbfcff !important;box-shadow: 0 3px 10px rgba(43,124,255,0.1) !important; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="left">
+    <div class="left-header">
+      <div class="brand">SMS </div>
+      <div>
+        <button id="newGroupBtn" class="newBtn">New Group</button>
+        <button id="newContactBtn" class="newBtn" style="margin-left:6px;background:#4caf50;">New Contact</button>
+      </div>
+    </div>
+
+    <div class="left-search"><input id="searchBox" placeholder="Search groups or contacts" /></div>
+
+    <div class="lists">
+      <div class="sectionTitle">People</div>
+      <div id="contactsContainer"></div>
+
+      <div class="sectionTitle">Groups</div>
+      <div id="groupsContainer"></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="main-header">
+      <div>
+        <div id="chatTitle" class="chatTitle">Select a person or group</div>
+        <div id="chatSubtitle" class="chatSubtitle">Select an item to start chatting</div>
+      </div>
+      
+    </div>
+
+    <div class="messages" id="messages"><div class="muted">No messages yet</div></div>
+
+    <div class="composer">
+      <button id="fromBtn" class="composerSender">
+        <div style="display: flex; align-items: center; flex: 1;">
+          <div class="composerSender-avatar" id="senderAvatar" style="display: none;">?</div>
+          <span id="senderText">Select Sender</span>
+        </div>
+      </button>
+      <input id="composerInput" class="messageInput" placeholder="Type a message (max 50 chars)" maxlength="50" oninput="updateCounter()" onkeydown="if(event.key==='Enter'){sendComposerMessage();}" />
+      <button class="btnPrimary" onclick="sendComposerMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- Create group modal -->
+<div class="modalBg" id="modalBg">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">Create Group</h3>
+      <button onclick="closeModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div class="mini">Enter group name and up to 10 members (choose from contacts)</div>
+    <label>Group name</label>
+    <input id="modalGroupName" />
+
+    <!-- REPLACED textarea WITH interactive members chooser -->
+    <label style="margin-top:8px">Members</label>
+
+    <input id="membersSearch" class="members-search" placeholder="Search contacts to add" oninput="renderMemberList()" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef5;box-sizing:border-box" />
+
+    <div id="modalGroupMembersList" class="members-list" aria-live="polite"></div>
+
+    <div class="small-note">Select members from your contacts. Max 10.</div>
+
+    <div class="charCounter" id="membersCount">0 / 10 members</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
+      <button onclick="closeModal()" style="background:#f4f6f9;border:1px solid #e6eef5;padding:8px;border-radius:6px">Cancel</button>
+      <button class="btnPrimary" onclick="modalCreateGroup()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Create contact modal -->
+<div class="modalBg" id="contactModalBg" style="display:none">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">New Contact</h3>
+      <button onclick="closeContactModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer">✕</button>
+    </div>
+
+    <label style="margin-top:6px">Contact name</label>
+    <input id="contactNameInput" placeholder="Enter contact name" />
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
+      <button onclick="closeContactModal()" style="background:#f4f6f9;border:1px solid #e6eef5;padding:8px;border-radius:6px">Cancel</button>
+      <button class="btnPrimary" onclick="createContact()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- delete modal -->
+<div class="modalBg" id="deleteModalBg" style="display:none">
+  <div class="modal">
+    <h3 id="deleteTitle">Delete</h3>
+    <div class="mini" id="deleteText">Confirm delete?</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
+      <button onclick="closeDeleteModal()" style="background:#f4f6f9;border:1px solid #e6eef5;padding:8px;border-radius:6px">Cancel</button>
+      <button class="btnPrimary" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sender selection modal -->
+<div class="modalBg" id="senderModalBg" style="display:none">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">Select Sender</h3>
+      <button onclick="closeSenderModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div id="senderList" style="max-height:300px; overflow:auto;"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
+      <button onclick="closeSenderModal()" style="background:#f4f6f9;border:1px solid #e6eef5;padding:8px;border-radius:6px">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* ---------- state ---------- */
+let lastMessageId = 0;
+let currentConversation = null;
+let groups = [];
+// keep-case sample contacts so 'mohan' and 'MOHAN' can both exist
+let contacts = ['mohan', 'MOHAN', 'omkar', 'raj', 'sneha'];
+let selectedSender = null;
+let refreshInterval = null;
+const groupsContainer = document.getElementById('groupsContainer');
+const contactsContainer = document.getElementById('contactsContainer');
+const messagesEl = document.getElementById('messages');
+const chatTitle = document.getElementById('chatTitle');
+const chatSubtitle = document.getElementById('chatSubtitle');
+const modalBg = document.getElementById('modalBg');
+const deleteModalBg = document.getElementById('deleteModalBg');
+const membersCountEl = document.getElementById('membersCount');
+const toastEl = document.getElementById('toast');
+const fromBtn = document.getElementById('fromBtn');
+const membersListEl = document.getElementById('modalGroupMembersList');
+const membersSearchEl = document.getElementById('membersSearch');
+
+// search input hookup
+const searchBox = document.getElementById('searchBox');
+searchBox.addEventListener('input', () => filterList());
+
+document.getElementById('newGroupBtn').addEventListener('click', openModal);
+document.getElementById('modalGroupName').addEventListener('input', ()=> {}); // reserved
+fromBtn.addEventListener('click', openSenderModal);
+
+/* ---------- helpers ---------- */
+function toast(msg, t=1600){ toastEl.textContent = msg; toastEl.classList.add('show'); clearTimeout(toastEl._t); toastEl._t = setTimeout(()=> toastEl.classList.remove('show'), t); }
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
+function escapeJs(s){ return String(s||'').replace(/'/g, "\\'"); }
+
+/* ------------------ CONTACT MODAL ------------------ */
+document.getElementById('newContactBtn').onclick = () => {
+  document.querySelectorAll('.dropdown').forEach(d=>d.remove());
+  openContactModal();
+};
+
+function openContactModal() { document.getElementById('contactModalBg').style.display = 'flex'; }
+function closeContactModal() { document.getElementById('contactModalBg').style.display = 'none'; document.getElementById('contactNameInput').value = ''; }
+
+function createContact() {
+  // preserve user case intentionally — 'mohan' and 'MOHAN' are different
+  const name = document.getElementById('contactNameInput').value.trim();
+  if (!name) { alert("Enter a contact name"); return; }
+
+  // only treat exact matches as duplicates (case-sensitive)
+  if (contacts.includes(name)) { alert("Contact already exists (exact match)"); return; }
+
+  contacts.push(name);
+  renderContacts();
+  closeContactModal();
+  toast("Contact created");
+  openContact(name);
+
+  // re-render members list if modal open (so newly added contact is selectable)
+  if (modalBg.style.display === 'flex') renderMemberList();
+}
+
+
+/* ---------- init ---------- */
+async function init(){ renderContacts(); await loadGroups(); renderMemberList(); }
+init();
+
+/* ---------- simple debounce ---------- */
+function debounce(fn, wait=160){ let t; return function(...a){ clearTimeout(t); t = setTimeout(()=>fn.apply(this,a), wait); } }
+
+/* ---------- contacts (render + delete) ---------- */
+function renderContacts(){
+  contactsContainer.innerHTML = '';
+  if(!contacts.length) contactsContainer.innerHTML = '<div class="muted">No contacts</div>';
+  contacts.forEach(c=>{
+    const div = document.createElement('div');
+    div.className = 'cardRow small';
+    const initials = (c||'')[0]?.toUpperCase() || '?';
+    div.innerHTML = `\n      <div class="cardLeft">\n        <div class="avatar">${escapeHtml(initials)}</div>\n        <div style="flex:1">\n          <strong style="display:block">${escapeHtml(c)}</strong>\n          <div class="quick">quick contact</div>\n        </div>\n      </div>`;
+    const dots = document.createElement('div'); dots.className='menuDot'; dots.textContent='⋮';
+    dots.onclick = (ev)=>{ ev.stopPropagation(); showDropdownForContact(ev.currentTarget, c); };
+    div.appendChild(dots);
+    div.onclick = ()=> openContact(c);
+    contactsContainer.appendChild(div);
+  });
+}
+
+function showDropdownForContact(targetEl, contactName){
+  document.querySelectorAll('.dropdown').forEach(d=>d.remove());
+  const dd = document.createElement('div'); dd.className='dropdown';
+  dd.innerHTML = `<button onclick="openContact('${escapeJs(contactName)}')">Open</button>\n                  <button onclick="confirmDeleteContact('${escapeJs(contactName)}')">Delete</button>`;
+  document.body.appendChild(dd);
+  const r = targetEl.getBoundingClientRect();
+  dd.style.left = (r.right + 6) + 'px';
+  dd.style.top = (r.top + window.scrollY) + 'px';
+  setTimeout(()=> { const rm = (ev)=>{ if(!dd.contains(ev.target) && ev.target !== targetEl) { dd.remove(); document.removeEventListener('click', rm); } };
+  document.addEventListener('click', rm); }, 10);
+}
+
+function confirmDeleteContact(name){
+  document.querySelectorAll('.dropdown').forEach(d=>d.remove());
+  showDeleteModal('Delete contact', `Do you want to delete contact "${name}"? This removes it locally.`, ()=> {
+    contacts = contacts.filter(c=>c!==name);
+    renderContacts();
+    if(currentConversation && currentConversation.type==='contact' && currentConversation.id===name){ currentConversation = null; messagesEl.innerHTML=''; chatTitle.textContent='Select a person or group'; chatSubtitle.textContent=''; }
+    closeDeleteModal();
+    toast('Contact deleted');
+    if (modalBg.style.display === 'flex') renderMemberList();
+  });
+}
+
+/* ---------- groups (load/list/create/delete + dropdown) ---------- */
+async function loadGroups(){
+  try {
+    const res = await fetch('/groups');
+    groups = res.ok ? await res.json() : [];
+    renderGroups(groups);
+  } catch (e) {
+    console.error('loadGroups', e);
+    groupsContainer.innerHTML = '<div class="muted">Could not load groups</div>';
+  }
+}
+
+function renderGroups(list){
+  groupsContainer.innerHTML = '';
+  if(!Array.isArray(list) || list.length===0){ groupsContainer.innerHTML = '<div class="muted">No groups yet</div>'; return; }
+  list.forEach(g=>{
+    const card = document.createElement('div');
+    card.className = 'cardRow';
+    card.innerHTML = `<div style="flex:1"><div style="font-weight:600">${escapeHtml(g.name)}</div><div class="meta">${escapeHtml((g.members||[]).length + ' members')}</div></div>`;
+    const dots = document.createElement('div'); dots.className='menuDot'; dots.textContent='⋮';
+    dots.onclick = (ev)=>{ ev.stopPropagation(); showDropdownForGroup(ev.currentTarget, g); };
+    card.appendChild(dots);
+    card.onclick = ()=> openGroup(g);
+    groupsContainer.appendChild(card);
+  });
+}
+
+function showDropdownForGroup(targetEl, groupObj){
+  document.querySelectorAll('.dropdown').forEach(d=>d.remove());
+  const dd = document.createElement('div'); dd.className='dropdown';
+  dd.innerHTML = `<button onclick="openGroupById('${groupObj._id || groupObj.id}')">Open</button>\n                  <button onclick="confirmDeleteGroup('${groupObj._id || groupObj.id}', '${escapeJs(groupObj.name)}')">Delete</button>`;
+  document.body.appendChild(dd);
+  const r = targetEl.getBoundingClientRect();
+  dd.style.left = (r.right + 6) + 'px';
+  dd.style.top = (r.top + window.scrollY) + 'px';
+  setTimeout(()=> { const rm = (ev)=>{ if(!dd.contains(ev.target) && ev.target !== targetEl) { dd.remove(); document.removeEventListener('click', rm); } }; document.addEventListener('click', rm); }, 10);
+}
+
+function openGroupById(id){
+  const g = groups.find(x => String(x._id)===String(id) || String(x.id)===String(id));
+  if(g) openGroup(g);
+}
+
+function showTempGroup(g){
+  const card = document.createElement('div');
+  card.className = 'cardRow disabledCard';
+  card.id = 'card-'+g._id;
+  card.innerHTML = `<div style="flex:1"><div style="font-weight:600">${escapeHtml(g.name)} <span class="smallGray">(creating...)</span></div><div class="meta">${escapeHtml(g.members.length + ' members')}</div></div>`;
+  groupsContainer.insertBefore(card, groupsContainer.firstChild);
+}
+function removeTempGroup(tempId){ const el = document.getElementById('card-'+tempId); if(el) el.remove(); }
+
+/* ---------- NEW members UI rendering + selection logic ---------- */
+
+function renderMemberList(){
+  // show contacts filtered by membersSearchEl value
+  const q = (membersSearchEl.value || '').trim().toLowerCase();
+  membersListEl.innerHTML = '';
+  if (!Array.isArray(contacts) || contacts.length === 0) {
+    membersListEl.innerHTML = '<div class="muted">No contacts</div>';
+    return;
+  }
+  // map of currently selected
+  const currentlySelected = new Set(Array.from(membersListEl.querySelectorAll('input[type="checkbox"]:checked')).map(i=>i.value));
+  // but we will maintain selection in DOM by reading checkboxes on clicks; to avoid losing selection when re-rendering,
+  // read previous selections from checkboxes before clearing:
+  const prevSelected = new Set();
+  document.querySelectorAll('#modalGroupMembersList input[type="checkbox"]:checked').forEach(i=>prevSelected.add(i.value));
+
+  const filtered = contacts.filter(c => c.toLowerCase().includes(q));
+  if(filtered.length === 0){ membersListEl.innerHTML = '<div class="muted">No matching contacts</div>'; updateMembersCount(); return; }
+
+  filtered.forEach(c => {
+    const id = 'member_' + c.replace(/\s+/g,'_');
+    const row = document.createElement('label');
+    row.className = 'member-row';
+    row.htmlFor = id;
+    const initials = (c||'')[0]?.toUpperCase() || '?';
+    const isChecked = prevSelected.has(c);
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;flex:1">
+        <div class="avatar" style="width:36px;height:36px;border-radius:8px">${escapeHtml(initials)}</div>
+        <div style="flex:1">
+          <div class="member-name">${escapeHtml(c)}</div>
+          <div class="member-sub">contact</div>
+        </div>
+      </div>
+      <input id="${id}" type="checkbox" style="width:18px;height:18px" class="member-checkbox-input" value="${escapeHtml(c)}" ${isChecked ? 'checked' : ''} />
+    `;
+    // clicking the whole row toggles checkbox via label-for
+    membersListEl.appendChild(row);
+  });
+
+  // wire checkbox change handlers
+  membersListEl.querySelectorAll('input.member-checkbox-input').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      // limit to 10
+      const checkedCount = membersListEl.querySelectorAll('input.member-checkbox-input:checked').length;
+      if (checkedCount > 10) {
+        e.target.checked = false;
+        toast('Max 10 members allowed');
+        return;
+      }
+      updateMembersCount();
+    });
+  });
+
+  // ensure count is correct
+  // preserve previously selected that may be outside filtered list by counting globally in DOM
+  updateMembersCount();
+}
+
+function updateMembersCount(){
+  const checkedCount = document.querySelectorAll('#modalGroupMembersList input.member-checkbox-input:checked').length;
+  membersCountEl.textContent = `${checkedCount} / 10 members`;
+}
+
+/* ---------- modal create group (reads selected checkboxes) ---------- */
+async function modalCreateGroup(){
+  const name = document.getElementById('modalGroupName').value.trim();
+  // gather selected members from checkboxes
+  const selectedNodes = Array.from(document.querySelectorAll('#modalGroupMembersList input.member-checkbox-input:checked'));
+  const members = selectedNodes.map(n => n.value.trim()).filter(Boolean);
+
+  if(!name){ alert('Enter group name'); return; }
+  if(members.length===0){ alert('Add at least 1 member'); return; }
+  if(members.length>10){ alert('Max 10 members allowed'); return; }
+
+  // optimistic UI
+  const tempId = 'temp-'+Date.now();
+  showTempGroup({_id: tempId, name, members});
+
+  closeModal();
+  document.getElementById('modalGroupName').value = '';
+  membersSearchEl.value = '';
+  // clear checkboxes
+  membersListEl.innerHTML = '';
+  updateMembersCount();
+
+  try {
+    const res = await fetch('/groups', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, members, createdBy: null })
+    });
+    const json = await res.json().catch(()=>({}));
+
+    if (!res.ok) {
+      removeTempGroup(tempId);
+      toast('Create failed');
+      console.error('Create group failed', res.status, json);
+      return;
+    }
+
+    if (json && json.group && json.group._id) {
+      removeTempGroup(tempId);
+      groups.unshift(json.group);
+      renderGroups(groups);
+      toast('Group created');
+      openGroup(json.group);
+      return;
+    }
+
+    const returnedId = json.groupId || json.insertedId || json.id || json._id;
+    if (returnedId) {
+      const createdGroup = { _id: returnedId, name, members };
+      removeTempGroup(tempId);
+      groups.unshift(createdGroup);
+      renderGroups(groups);
+      toast('Group created');
+      openGroup(createdGroup);
+      setTimeout(loadGroups, 800);
+      return;
+    }
+
+    await loadGroups();
+    removeTempGroup(tempId);
+    toast('Group created');
+  } catch (err) {
+    removeTempGroup(tempId);
+    toast('Create failed');
+    console.error('Create group error', err);
+  }
+}
+
+/* ---------- messages: load & render + polling ---------- */
+setInterval(async () => {
+  if (!currentConversation) return;
+
+  let url;
+  if (currentConversation.type === 'contact') {
+    url = `/direct/${currentConversation.id}`;
+  } else if (currentConversation.type === 'group') {
+    url = `/groups/${currentConversation.id}/messages`;
+  } else {
+    return;
+  }
+
+  try {
+    const res = await fetch(url);
+    const messages = await res.json();
+
+    const latestId = messages[messages.length - 1]?._id || messages[messages.length - 1]?.timestamp || 0;
+    if (latestId <= lastMessageId) return;
+
+    messages.forEach(msg => {
+      const msgId = msg._id || msg.timestamp;
+      if (msgId > lastMessageId) {
+        renderMessage(msg);
+      }
+    });
+
+    lastMessageId = latestId;
+
+  } catch (err) {
+    // silent fail
+  }
+}, 2000);
+
+async function openGroup(g){
+  currentConversation = { type:'group', id: (g._id || g.id)+'', name: g.name, members: g.members || [] };
+  chatTitle.textContent = g.name; chatSubtitle.textContent = (g.members||[]).join(', ');
+  await loadGroupMessages(currentConversation.id);
+  startPolling();
+}
+
+async function openContact(name){
+  currentConversation = { type:'contact', id: name, name };
+  chatTitle.textContent = name; chatSubtitle.textContent = 'Direct chat';
+  await loadDirectMessages(name);
+  startPolling();
+}
+
+async function loadDirectMessages(contactName){
+  messagesEl.innerHTML = '<div class="muted">Loading messages...</div>';
+  const myName = selectedSender || 'you';
+  try {
+    const url = '/messages?u1=' + encodeURIComponent(myName) + '&u2=' + encodeURIComponent(contactName);
+    const res = await fetch(url);
+    if(!res.ok){ messagesEl.innerHTML = '<div class="muted">No messages yet</div>'; return; }
+    const arr = await res.json(); arr.sort((a,b) => new Date(a.time) - new Date(b.time)); renderMessages(arr);
+  } catch (e) { messagesEl.innerHTML = '<div class="muted">Could not load messages</div>'; console.error('loadDirectMessages error', e); }
+}
+
+async function loadGroupMessages(groupId){
+  messagesEl.innerHTML = '<div class="muted">Loading messages...</div>';
+  try {
+    const res = await fetch('/groups/'+groupId+'/messages');
+    const arr = res.ok ? await res.json() : [];
+    arr.sort((a,b) => new Date(a.time) - new Date(b.time)); renderMessages(arr);
+  } catch (e) { messagesEl.innerHTML = '<div class="muted">Could not load messages</div>'; console.error(e); }
+}
+
+function renderMessages(arr){
+  messagesEl.innerHTML = '';
+  if(!Array.isArray(arr) || arr.length===0){ messagesEl.innerHTML = '<div class="muted">No messages yet</div>'; return; }
+  const myName = selectedSender || 'you';
+  arr.forEach(m=>{
+    const from = m.from || m.sender || m.user || 'unknown';
+    const me = (from === myName);
+    const row = document.createElement('div'); row.className = 'msgRow ' + (me ? 'me' : 'other');
+    const bubble = document.createElement('div'); bubble.className = 'bubble ' + (me ? 'me' : 'other');
+    const text = escapeHtml(m.text || m.message || m.msg || '');
+    const ts = m.time ? new Date(m.time) : new Date();
+    bubble.innerHTML = `<div>${text}</div><div class="time">${ts.toLocaleString()}</div>`;
+    row.appendChild(bubble); messagesEl.appendChild(row);
+  });
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+/* ---------- send message (stable flow) ---------- */
+function updateCounter(){ const el = document.getElementById('composerInput'); const remaining = 50 - (el.value||'').length; el.placeholder = remaining>0 ? `Type a message (max 50 chars) — ${remaining} left` : 'Max 50 chars'; }
+
+async function sendComposerMessage(){
+  const text = document.getElementById('composerInput').value.trim();
+  if(!text) return alert('Type a message'); if(text.length > 50) return alert('Max 50 characters');
+  const from = selectedSender || 'you';
+  if(!currentConversation){ alert('Select a contact or group first'); return; }
+  appendOptimisticMessage({ from, text, time: new Date().toISOString() });
+  document.getElementById('composerInput').disabled = true;
+
+  if(currentConversation.type === 'group'){
+    try {
+      const res = await fetch('/groups/'+currentConversation.id+'/message', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ from, text })});
+      if(res.ok){ toast('Message sent'); await loadGroupMessages(currentConversation.id); }
+      else { toast('Send failed'); await loadGroupMessages(currentConversation.id); }
+    } catch (e) { toast('Send failed'); console.error(e); await loadGroupMessages(currentConversation.id); }
+  } else {
+    try {
+      const res = await fetch('/send', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ from, to: currentConversation.id, message: text })});
+      if(res.ok){ toast('Message sent'); await loadDirectMessages(currentConversation.id); }
+      else { toast('Send failed'); await loadDirectMessages(currentConversation.id); }
+    } catch (e) { toast('Send failed'); console.error(e); await loadDirectMessages(currentConversation.id); }
+  }
+
+  document.getElementById('composerInput').disabled = false; document.getElementById('composerInput').value = '';
+}
+
+function appendOptimisticMessage(msg){
+  const myName = selectedSender || 'you';
+  const me = (msg.from === myName);
+  const row = document.createElement('div'); row.className = 'msgRow ' + (me ? 'me' : 'other');
+  const bubble = document.createElement('div'); bubble.className = 'bubble ' + (me ? 'me' : 'other');
+  bubble.innerHTML = `<div>${escapeHtml(msg.text || msg.message || '')}</div><div class="time">${new Date(msg.time).toLocaleString()}</div>`;
+  row.appendChild(bubble); messagesEl.appendChild(row); messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+/* ---------- delete modal (reusable) ---------- */
+function showDeleteModal(title, text, onConfirm){
+  document.querySelectorAll('.dropdown').forEach(d=>d.remove());
+  document.getElementById('deleteTitle').textContent = title; document.getElementById('deleteText').textContent = text; deleteModalBg.style.display = 'flex'; const btn = document.getElementById('confirmDeleteBtn'); btn.onclick = onConfirm;
+}
+function closeDeleteModal(){ deleteModalBg.style.display = 'none'; }
+
+/* ---------- NEW: confirmDeleteGroup + performDeleteGroup ---------- */
+
+function confirmDeleteGroup(groupId, groupName){
+  document.querySelectorAll('.dropdown').forEach(d=>d.remove());
+  showDeleteModal('Delete group', `Delete group "${groupName}"? This action will remove it locally and attempt to delete it from the server.`, async ()=> {
+    closeDeleteModal();
+    await performDeleteGroup(groupId);
+  });
+}
+
+async function performDeleteGroup(groupId){
+  try {
+    const idx = groups.findIndex(g => String(g._id) === String(groupId) || String(g.id) === String(groupId));
+    const removed = idx >= 0 ? groups.splice(idx, 1)[0] : null;
+    renderGroups(groups);
+    if (currentConversation && currentConversation.type === 'group' && (String(currentConversation.id) === String(groupId) || (removed && String(removed._id) === String(currentConversation.id)) ) ) {
+      currentConversation = null;
+      messagesEl.innerHTML = '';
+      chatTitle.textContent = 'Select a person or group';
+      chatSubtitle.textContent = 'Select an item to start chatting';
+      stopPolling();
+    }
+    const res = await fetch('/groups/' + encodeURIComponent(groupId), { method: 'DELETE' });
+    if (!res.ok) {
+      if (removed) {
+        groups.splice(idx, 0, removed);
+        renderGroups(groups);
+      }
+      toast('Delete failed on server');
+      console.error('Delete group failed', res.status, await res.text().catch(()=>'')); 
+      return;
+    }
+    toast('Group deleted');
+  } catch (err) {
+    console.error('performDeleteGroup error', err);
+    toast('Delete failed');
+  }
+}
+
+/* ---------- search/filter (simple) ---------- */
+const _filterList = debounce(()=>{
+  const q = (searchBox.value||'').trim().toLowerCase();
+  document.querySelectorAll('#contactsContainer .cardRow').forEach(card=>{
+    const txt = (card.querySelector('strong')?.textContent||'').toLowerCase(); card.style.display = txt.includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('#groupsContainer .cardRow').forEach(card=>{
+    const txt = (card.querySelector('div > div')?.textContent||'').toLowerCase(); card.style.display = txt.includes(q) ? '' : 'none';
+  });
+}, 160);
+function filterList(){ _filterList(); }
+
+/* modal open/close */
+function openModal(){
+  document.querySelectorAll('.dropdown').forEach(d=>d.remove());
+  // ensure members list is freshly rendered (clear search)
+  membersSearchEl.value = '';
+  renderMemberList();
+  modalBg.style.display='flex';
+}
+function closeModal(){ modalBg.style.display='none'; }
+
+/* ---------- sender modal ---------- */
+function openSenderModal() {
+  const list = document.getElementById('senderList');
+  list.innerHTML = '';
+
+  if (currentConversation && currentConversation.type === 'contact') {
+    const peopleTitle = document.createElement('div');
+    peopleTitle.className = 'sectionTitle';
+    peopleTitle.textContent = 'People';
+    list.appendChild(peopleTitle);
+
+    if (contacts.length === 0) {
+      list.innerHTML += '<div class="muted">No contacts</div>';
+    } else {
+      contacts.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'cardRow small';
+        const initials = c[0]?.toUpperCase() || '?';
+        div.innerHTML = `
+          <div class="cardLeft">
+            <div class="avatar">${escapeHtml(initials)}</div>
+            <div style="flex:1">
+              <strong style="display:block">${escapeHtml(c)}</strong>
+              <div class="quick">contact</div>
+            </div>
+          </div>`;
+        div.onclick = () => selectSender(c);
+        list.appendChild(div);
+      });
+    }
+
+  } else if (currentConversation && currentConversation.type === 'group') {
+    const peopleTitle = document.createElement('div');
+    peopleTitle.className = 'sectionTitle';
+    peopleTitle.textContent = 'Group Members';
+    list.appendChild(peopleTitle);
+
+    if (currentConversation.members && currentConversation.members.length > 0) {
+      currentConversation.members.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'cardRow small';
+        const initials = c[0]?.toUpperCase() || '?';
+        div.innerHTML = `
+          <div class="cardLeft">
+            <div class="avatar">${escapeHtml(initials)}</div>
+            <div style="flex:1">
+              <strong style="display:block">${escapeHtml(c)}</strong>
+              <div class="quick">member</div>
+            </div>
+          </div>`;
+        div.onclick = () => selectSender(c);
+        list.appendChild(div);
+      });
+    } else {
+      list.innerHTML += '<div class="muted">No members</div>';
+    }
+  }
+
+  document.getElementById('senderModalBg').style.display = 'flex';
+}
+function closeSenderModal() {
+  document.getElementById('senderModalBg').style.display = 'none';
+}
+function selectSender(name) {
+  selectedSender = name;
+  const textEl = document.getElementById('senderText');
+  const avatarEl = document.getElementById('senderAvatar');
+  textEl.textContent = name;
+  avatarEl.textContent = name.charAt(0).toUpperCase();
+  avatarEl.style.display = 'flex';
+  fromBtn.classList.add('selected');
+  closeSenderModal();
+  toast(`Selected as ${name}`);
+
+  if (currentConversation && currentConversation.type === 'contact') {
+    loadDirectMessages(currentConversation.id);
+  }
+}
+window.refreshGroups = loadGroups;
+
+// CLOSE MODALS BY CLICKING OUTSIDE
+document.addEventListener('click', function(e) {
+  const groupModalBg = document.getElementById('modalBg');
+  const contactModalBg = document.getElementById('contactModalBg');
+  const groupModalBox = groupModalBg?.querySelector('.modal');
+  const contactModalBox = contactModalBg?.querySelector('.modal');
+
+  if (groupModalBg.style.display === 'flex' && 
+      groupModalBox && 
+      !groupModalBox.contains(e.target) && 
+      e.target.id !== 'newGroupBtn') {
+    closeModal();
+  }
+
+  if (contactModalBg.style.display === 'flex' && 
+      contactModalBox && 
+      !contactModalBox.contains(e.target) && 
+      e.target.id !== 'newContactBtn') {
+    closeContactModal();
+  }
+});
+
+// Prevent closing when clicking inside the modal
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+});
+
+/* small utility (renderMessage used by poll) */
+function renderMessage(msg){
+  // fallback render for polled messages where we appended earlier
+  const from = msg.from || msg.sender || msg.user || 'unknown';
+  const me = (from === (selectedSender || 'you'));
+  const row = document.createElement('div'); row.className = 'msgRow ' + (me ? 'me' : 'other');
+  const bubble = document.createElement('div'); bubble.className = 'bubble ' + (me ? 'me' : 'other');
+  const text = escapeHtml(msg.text || msg.message || '');
+  const ts = msg.time ? new Date(msg.time) : new Date();
+  bubble.innerHTML = `<div>${text}</div><div class="time">${ts.toLocaleString()}</div>`;
+  row.appendChild(bubble); messagesEl.appendChild(row); messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+/* polling helpers (basic placeholders – adapt if you use start/stop) */
+function startPolling(){ /* optional: implement if you prefer setInterval toggles */ }
+function stopPolling(){ /* optional: implement if you prefer setInterval toggles */ }
+</script>
+</body>
+</html>
