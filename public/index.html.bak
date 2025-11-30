@@ -1,8 +1,9 @@
-﻿<!doctype html>
+﻿<!-- image path: /mnt/data/48f723b7-94e6-401e-ba1a-2b36bd12c082.png -->
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>SMS --Chat</title>
+<title>SMS â€” Chat</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
 :root{ --bg:#f3f5f7; --card:#fff; --accent:#2b7cff; --muted:#6f747a; }
@@ -10,96 +11,11 @@ html,body{height:100%;margin:0}
 body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);display:flex;align-items:stretch;justify-content:center;padding:18px}
 .app{width:100%;max-width:1200px;height:88vh;display:flex;box-shadow:0 10px 30px rgba(14,25,40,0.06);border-radius:8px;overflow:hidden;background:linear-gradient(180deg,#fff,#fbfdff)}
 .left{width:320px;background:var(--card);border-right:1px solid #eef2f7;display:flex;flex-direction:column}
-/* Compact header that fits inside the left card */
-.left-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px;              /* smaller padding so it fits */
-  border-bottom: 1px solid #eef2f5;
-  gap: 8px;
-  box-sizing: border-box;
-  background: transparent;        /* keep it inside the card */
-}
-
-/* brand area (left) */
-.brand-wrap {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  min-width:0;
-}
-.brand { font-weight:800; font-size:15px; line-height:1; color:#111; }
-.username { color:var(--muted); font-weight:600; font-size:13px; max-width:110px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
-/* actions row: keep compact and no wrap */
-.left-header .actions { display:flex; gap:8px; align-items:center; flex:0 0 auto; }
-
-/* small compact buttons used for Group / Contact */
-.smallBtn {
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:6px 8px; font-size:13px; font-weight:700; border-radius:8px;
-  border:none; cursor:pointer; box-sizing:border-box;
-  background:var(--accent); color:#fff;
-  min-height:30px;
-}
-.smallBtn.green { background:#4caf50; }
-
-/* logout box styling (a small white card with subtle border) */
-/* Make wrapper match the exact footprint of other buttons */
-.logoutBox {
-  background: #fff;
-  border: 1px solid #e6eef5;
-  border-radius: 8px;
-
-  /* FIX: remove extra padding so size matches */
-  padding: 0;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(10,20,40,0.03);
-  margin-left: 4px;
-}
-
-/* Make Logout button identical to .smallBtn in size */
-.logoutBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  /* same padding + size as .smallBtn */
-  padding: 6px 8px;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  box-sizing: border-box;
-  min-height: 30px;
-
-  /* red variant */
-  background: #e53935;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(229,57,53,0.12);
-  transition: 0.15s;
-}
-
-.logoutBtn:hover { transform: translateY(-1px); filter: brightness(0.98); }
-.logoutBtn:active { transform: translateY(0); }
-
-
-/* defensive overrides to avoid full-width buttons */
-.left-header .actions button { width:auto !important; }
-
-/* responsive tiny tweak */
-@media (max-width:420px){
-  .smallBtn { padding:5px 7px; font-size:12px; }
-  .username { max-width:70px; }
-}
-
+.left-header{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f2f5}
+.brand{font-weight:700;font-size:16px}
+.newBtn{background:var(--accent);color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
 .left-search {
-  padding: 4px 8px;
+  padding: 8px 14px;
   border-bottom: 1px solid #f7fafc;
   box-sizing: border-box;
 }
@@ -158,11 +74,12 @@ body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);display:fl
   box-shadow: 0 2px 8px rgba(43, 124, 255, 0.1);
   transform: translateY(-1px);
 }
-/* replace with */
 .composer .composerSender::after {
-  content: '\25BE'; /* ▾ (small downward triangle) */
+  content: 'â–¼';
+  font-size: 10px;
+  color: var(--muted);
+  transition: transform 0.2s ease-in-out;
 }
-
 .composer .composerSender.selected::after {
   transform: rotate(180deg);
 }
@@ -278,6 +195,8 @@ label {
 .member-checkbox{width:18px;height:18px;border-radius:4px;border:1px solid #dbe7ff;background:white;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
 .member-name{font-weight:600}
 .member-sub{font-size:12px;color:var(--muted);margin-left:6px}
+/* small helper text */
+.small-note{font-size:13px;color:#666;margin-top:8px}
 @media(max-width:980px){ .app{flex-direction:column;height:95vh} .left{width:100%;height:36vh;border-radius:8px 8px 0 0} .main{height:64vh} }
 #modalBg .modal { width: 420px;padding: 26px 24px;border-radius: 16px;background: #fff;box-shadow: 0 16px 48px rgba(0,0,0,0.18);border: 1px solid rgba(43,124,255,0.1); }
 #modalBg h3 { font-size: 19px;font-weight: 800;margin: 0 0 6px 0;color: #111; }
@@ -295,20 +214,11 @@ label {
 <body>
 <div class="app">
   <div class="left">
-    <!-- MERGED header: brand + username + actions (group/contact/logout) -->
     <div class="left-header">
-      <div class="brand-wrap">
-        <div class="brand" title="SMS">SMS</div>
-        <div class="username" id="usernameLabel" title="Signed in as">-</div>
-      </div>
-
-      <div class="actions" role="toolbar" aria-label="Header actions">
-        <button id="newGroupBtn" class="smallBtn" title="Create group">✚ Group</button>
-        <button id="newContactBtn" class="smallBtn green" title="Add contact">👥 Contact</button>
-
-        <div class="logoutBox" title="Logout">
-          <button id="logoutBtn" class="logoutBtn">Logout</button>
-        </div>
+      <div class="brand">SMS </div>
+      <div>
+        <button id="newGroupBtn" class="newBtn">New Group</button>
+        <button id="newContactBtn" class="newBtn" style="margin-left:6px;background:#4caf50;">New Contact</button>
       </div>
     </div>
 
@@ -324,14 +234,13 @@ label {
   </div>
 
   <div class="main">
-   <div class="main-header">
-     <div>
-       <div id="chatTitle" class="chatTitle">Select a person or group</div>
-       <div id="chatSubtitle" class="chatSubtitle">Select an item to start chatting</div>
-     </div>
-
-     <button class="btnPrimary" onclick="openRealTimeChat()" style="margin-left: 10px;">💬 Real-Time Chat</button>
-   </div>
+    <div class="main-header">
+      <div>
+        <div id="chatTitle" class="chatTitle">Select a person or group</div>
+        <div id="chatSubtitle" class="chatSubtitle">Select an item to start chatting</div>
+      </div>
+      
+    </div>
 
     <div class="messages" id="messages"><div class="muted">No messages yet</div></div>
 
@@ -353,17 +262,21 @@ label {
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <h3 style="margin:0">Create Group</h3>
-      <button onclick="closeModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer"></button>
+      <button onclick="closeModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer">âœ•</button>
     </div>
     <div class="mini">Enter group name and up to 10 members (choose from contacts)</div>
     <label>Group name</label>
     <input id="modalGroupName" />
 
+    <!-- REPLACED textarea WITH interactive members chooser -->
     <label style="margin-top:8px">Members</label>
+
     <input id="membersSearch" class="members-search" placeholder="Search contacts to add" oninput="renderMemberList()" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef5;box-sizing:border-box" />
+
     <div id="modalGroupMembersList" class="members-list" aria-live="polite"></div>
 
     <div class="small-note">Select members from your contacts. Max 10.</div>
+
     <div class="charCounter" id="membersCount">0 / 10 members</div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
       <button onclick="closeModal()" style="background:#f4f6f9;border:1px solid #e6eef5;padding:8px;border-radius:6px">Cancel</button>
@@ -377,7 +290,7 @@ label {
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <h3 style="margin:0">New Contact</h3>
-      <button onclick="closeContactModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer">•</button>
+      <button onclick="closeContactModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer">âœ•</button>
     </div>
 
     <label style="margin-top:6px">Contact name</label>
@@ -407,7 +320,7 @@ label {
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <h3 style="margin:0">Select Sender</h3>
-      <button onclick="closeSenderModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer"></button>
+      <button onclick="closeSenderModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer">âœ•</button>
     </div>
     <div id="senderList" style="max-height:300px; overflow:auto;"></div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
@@ -418,17 +331,15 @@ label {
 
 <div id="toast" class="toast"></div>
 
-<script src="/socket.io/socket.io.js"></script>
 <script>
 /* ---------- state ---------- */
 let lastMessageId = 0;
 let currentConversation = null;
 let groups = [];
-// contacts loaded from Atlas
-let contacts = [];
+// keep-case sample contacts so 'mohan' and 'MOHAN' can both exist
+let contacts = ['mohan', 'MOHAN', 'omkar', 'raj', 'sneha'];
 let selectedSender = null;
-let socket = null;
-let isRealTimeEnabled = true;
+let refreshInterval = null;
 const groupsContainer = document.getElementById('groupsContainer');
 const contactsContainer = document.getElementById('contactsContainer');
 const messagesEl = document.getElementById('messages');
@@ -442,95 +353,11 @@ const fromBtn = document.getElementById('fromBtn');
 const membersListEl = document.getElementById('modalGroupMembersList');
 const membersSearchEl = document.getElementById('membersSearch');
 
-// Initialize Socket.IO
-function initSocket() {
-  socket = io();
-
-  socket.on('connect', () => {
-    console.log('🔌 Connected to server');
-    const userId = localStorage.getItem('userId') || localStorage.getItem('username');
-    if (userId) {
-      socket.emit('join', userId);
-    }
-  });
-
-  socket.on('disconnect', () => {
-    console.log('🔌 Disconnected from server');
-  });
-
-  // Handle incoming direct messages (instant rendering)
-  socket.on('new-message', (message) => {
-    if (currentConversation && currentConversation.type === 'contact') {
-      const myName = selectedSender || localStorage.getItem('username') || 'you';
-      if ((message.from === currentConversation.id && message.to === myName) ||
-          (message.to === currentConversation.id && message.from === myName)) {
-        renderMessage(message);
-        lastMessageId = message._id || message.time || lastMessageId;
-        // Auto-scroll to bottom for new messages
-        messagesEl.scrollTop = messagesEl.scrollHeight;
-      }
-    }
-  });
-
-  // Handle incoming group messages (instant rendering)
-  socket.on('new-group-message', (message) => {
-    if (currentConversation && currentConversation.type === 'group' &&
-        message.groupId === currentConversation.id) {
-      renderMessage(message);
-      lastMessageId = message._id || message.time || lastMessageId;
-      // Auto-scroll to bottom for new messages
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
-  });
-
-  // Handle message sent confirmation
-  socket.on('message-sent', (message) => {
-    // Message was sent successfully, remove optimistic UI if needed
-    console.log('Message sent:', message);
-  });
-
-  // Handle typing indicators
-  socket.on('user-typing', (data) => {
-    // Handle typing indicator for direct messages
-  });
-
-  socket.on('user-group-typing', (data) => {
-    // Handle typing indicator for group messages
-  });
-
-  socket.on('message-error', (error) => {
-    console.error('Message error:', error);
-    toast('Failed to send message');
-  });
-}
-
 // search input hookup
 const searchBox = document.getElementById('searchBox');
 searchBox.addEventListener('input', () => filterList());
 
-// wire header buttons (they exist now only once)
 document.getElementById('newGroupBtn').addEventListener('click', openModal);
-document.getElementById('newContactBtn').addEventListener('click', openContactModal);
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  try {
-    // Call logout endpoint
-    await fetch('/api/auth/logout', { method: 'POST' });
-  } catch (e) {
-    console.error('Logout error', e);
-  }
-
-  // Clear auth-related keys
-  localStorage.removeItem('token');
-  localStorage.removeItem('userId');
-  localStorage.removeItem('username');
-  localStorage.removeItem('user');
-  // Clear conversation state
-  currentConversation = null;
-  lastMessageId = 0;
-  // Redirect to home
-  window.location.href = '/';
-});
-
 document.getElementById('modalGroupName').addEventListener('input', ()=> {}); // reserved
 fromBtn.addEventListener('click', openSenderModal);
 
@@ -539,40 +366,14 @@ function toast(msg, t=1600){ toastEl.textContent = msg; toastEl.classList.add('s
 function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
 function escapeJs(s){ return String(s||'').replace(/'/g, "\\'"); }
 
-function formatMessageTime(date) {
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const messageDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-  if (messageDate.getTime() === today.getTime()) {
-    // Today: show time only
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  } else if (messageDate.getTime() === today.getTime() - 86400000) {
-    // Yesterday
-    return 'Yesterday ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  } else {
-    // Other days: show date and time
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }
-}
-
 /* ------------------ CONTACT MODAL ------------------ */
+document.getElementById('newContactBtn').onclick = () => {
+  document.querySelectorAll('.dropdown').forEach(d=>d.remove());
+  openContactModal();
+};
+
 function openContactModal() { document.getElementById('contactModalBg').style.display = 'flex'; }
 function closeContactModal() { document.getElementById('contactModalBg').style.display = 'none'; document.getElementById('contactNameInput').value = ''; }
-
-/* ---------- contacts (load from Atlas) ---------- */
-async function loadContacts(){
-  try {
-    const res = await fetch('/api/contacts');
-    if (res.ok) {
-      const users = await res.json();
-      contacts = users.map(u => u.name || u.username || 'Unknown');
-    }
-  } catch (e) {
-    console.error('loadContacts', e);
-    // fallback to empty
-  }
-}
 
 function createContact() {
   // preserve user case intentionally â€” 'mohan' and 'MOHAN' are different
@@ -592,17 +393,9 @@ function createContact() {
   if (modalBg.style.display === 'flex') renderMemberList();
 }
 
-/* ---------- init ---------- */
-async function init(){
-  // show username (if present)
-  const username = localStorage.getItem('username') || '';
-  if (username) document.getElementById('usernameLabel').textContent = username;
 
-  await loadContacts();
-  renderContacts();
-  await loadGroups();
-  renderMemberList();
-}
+/* ---------- init ---------- */
+async function init(){ renderContacts(); await loadGroups(); renderMemberList(); }
 init();
 
 /* ---------- simple debounce ---------- */
@@ -617,8 +410,7 @@ function renderContacts(){
     div.className = 'cardRow small';
     const initials = (c||'')[0]?.toUpperCase() || '?';
     div.innerHTML = `\n      <div class="cardLeft">\n        <div class="avatar">${escapeHtml(initials)}</div>\n        <div style="flex:1">\n          <strong style="display:block">${escapeHtml(c)}</strong>\n          <div class="quick">quick contact</div>\n        </div>\n      </div>`;
-    const dots = document.createElement('div'); dots.className='menuDot'; dots.textContent = '\u22EF'; // horiz ellipsis '⋯' — or use '\u22EE' for vertical '⋮'
-
+    const dots = document.createElement('div'); dots.className='menuDot'; dots.textContent='â‹®';
     dots.onclick = (ev)=>{ ev.stopPropagation(); showDropdownForContact(ev.currentTarget, c); };
     div.appendChild(dots);
     div.onclick = ()=> openContact(c);
@@ -653,7 +445,7 @@ function confirmDeleteContact(name){
 /* ---------- groups (load/list/create/delete + dropdown) ---------- */
 async function loadGroups(){
   try {
-    const res = await fetch('/api/groups');
+    const res = await fetch('/groups');
     groups = res.ok ? await res.json() : [];
     renderGroups(groups);
   } catch (e) {
@@ -669,8 +461,7 @@ function renderGroups(list){
     const card = document.createElement('div');
     card.className = 'cardRow';
     card.innerHTML = `<div style="flex:1"><div style="font-weight:600">${escapeHtml(g.name)}</div><div class="meta">${escapeHtml((g.members||[]).length + ' members')}</div></div>`;
-    const dots = document.createElement('div'); dots.className='menuDot'; dots.textContent = '\u22EF'; // horiz ellipsis '⋯' — or use '\u22EE' for vertical '⋮'
-
+    const dots = document.createElement('div'); dots.className='menuDot'; dots.textContent='â‹®';
     dots.onclick = (ev)=>{ ev.stopPropagation(); showDropdownForGroup(ev.currentTarget, g); };
     card.appendChild(dots);
     card.onclick = ()=> openGroup(g);
@@ -791,12 +582,11 @@ async function modalCreateGroup(){
   updateMembersCount();
 
   try {
-    const res = await fetch('/api/groups', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', ...(localStorage.getItem('token') ? { Authorization: 'Bearer ' + localStorage.getItem('token') } : {}) },
-  body: JSON.stringify({ name, members, createdBy: localStorage.getItem('userId') || null })
-});
-
+    const res = await fetch('/groups', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, members, createdBy: null })
+    });
     const json = await res.json().catch(()=>({}));
 
     if (!res.ok) {
@@ -837,25 +627,46 @@ async function modalCreateGroup(){
   }
 }
 
-/* ---------- messages: load & render (real-time only, no polling) ---------- */
-/* Polling disabled for instant real-time updates via Socket.IO */
+/* ---------- messages: load & render + polling ---------- */
+setInterval(async () => {
+  if (!currentConversation) return;
 
+  let url;
+  if (currentConversation.type === 'contact') {
+    url = `/direct/${currentConversation.id}`;
+  } else if (currentConversation.type === 'group') {
+    url = `/groups/${currentConversation.id}/messages`;
+  } else {
+    return;
+  }
+
+  try {
+    const res = await fetch(url);
+    const messages = await res.json();
+
+    const latestId = messages[messages.length - 1]?._id || messages[messages.length - 1]?.timestamp || 0;
+    if (latestId <= lastMessageId) return;
+
+    messages.forEach(msg => {
+      const msgId = msg._id || msg.timestamp;
+      if (msgId > lastMessageId) {
+        renderMessage(msg);
+      }
+    });
+
+    lastMessageId = latestId;
+
+  } catch (err) {
+    // silent fail
+  }
+}, 2000);
 
 async function openGroup(g){
-  // store the full group object so we can try alternate id fields when sending
-  currentConversation = {
-    type: 'group',
-    id: String(g._id || g.id || g.groupId || ''),
-    name: g.name || '',
-    members: g.members || [],
-    full: g
-  };
-  chatTitle.textContent = g.name || 'Group';
-  chatSubtitle.textContent = (g.members||[]).join(', ');
+  currentConversation = { type:'group', id: (g._id || g.id)+'', name: g.name, members: g.members || [] };
+  chatTitle.textContent = g.name; chatSubtitle.textContent = (g.members||[]).join(', ');
   await loadGroupMessages(currentConversation.id);
   startPolling();
 }
-
 
 async function openContact(name){
   currentConversation = { type:'contact', id: name, name };
@@ -868,30 +679,21 @@ async function loadDirectMessages(contactName){
   messagesEl.innerHTML = '<div class="muted">Loading messages...</div>';
   const myName = selectedSender || 'you';
   try {
-    const url = '/api/messages?u1=' + encodeURIComponent(myName) + '&u2=' + encodeURIComponent(contactName);
- const res = await fetch(url);
-
+    const url = '/messages?u1=' + encodeURIComponent(myName) + '&u2=' + encodeURIComponent(contactName);
+    const res = await fetch(url);
     if(!res.ok){ messagesEl.innerHTML = '<div class="muted">No messages yet</div>'; return; }
     const arr = await res.json(); arr.sort((a,b) => new Date(a.time) - new Date(b.time)); renderMessages(arr);
-    // update lastMessageId to prevent polling from duplicating
-    lastMessageId = arr.length ? (arr[arr.length - 1]._id || arr[arr.length - 1].time || 0) : 0;
   } catch (e) { messagesEl.innerHTML = '<div class="muted">Could not load messages</div>'; console.error('loadDirectMessages error', e); }
 }
 
 async function loadGroupMessages(groupId){
   messagesEl.innerHTML = '<div class="muted">Loading messages...</div>';
   try {
-    const res = await fetch('/api/groups/'+groupId+'/messages');
+    const res = await fetch('/groups/'+groupId+'/messages');
     const arr = res.ok ? await res.json() : [];
     arr.sort((a,b) => new Date(a.time) - new Date(b.time)); renderMessages(arr);
-    // update lastMessageId to prevent polling from duplicating
-    lastMessageId = arr.length ? (arr[arr.length - 1]._id || arr[arr.length - 1].time || 0) : 0;
-  } catch (e) {
-    messagesEl.innerHTML = '<div class="muted">Could not load messages</div>';
-    console.error(e);
-  }
+  } catch (e) { messagesEl.innerHTML = '<div class="muted">Could not load messages</div>'; console.error(e); }
 }
-
 
 function renderMessages(arr){
   messagesEl.innerHTML = '';
@@ -904,8 +706,7 @@ function renderMessages(arr){
     const bubble = document.createElement('div'); bubble.className = 'bubble ' + (me ? 'me' : 'other');
     const text = escapeHtml(m.text || m.message || m.msg || '');
     const ts = m.time ? new Date(m.time) : new Date();
-    const timeStr = formatMessageTime(ts);
-    bubble.innerHTML = `<div>${text}</div><div class="time">${timeStr}</div>`;
+    bubble.innerHTML = `<div>${text}</div><div class="time">${ts.toLocaleString()}</div>`;
     row.appendChild(bubble); messagesEl.appendChild(row);
   });
   messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -915,115 +716,36 @@ function renderMessages(arr){
 function updateCounter(){ const el = document.getElementById('composerInput'); const remaining = 50 - (el.value||'').length; el.placeholder = remaining>0 ? `Type a message (max 50 chars) â€” ${remaining} left` : 'Max 50 chars'; }
 
 async function sendComposerMessage(){
-  const inputEl = document.getElementById('composerInput');
-  const text = (inputEl.value || '').trim();
-  if(!text) return alert('Type a message');
-  if(text.length > 50) return alert('Max 50 characters');
-
-  const from = selectedSender || localStorage.getItem('username') || 'you';
+  const text = document.getElementById('composerInput').value.trim();
+  if(!text) return alert('Type a message'); if(text.length > 50) return alert('Max 50 characters');
+  const from = selectedSender || 'you';
   if(!currentConversation){ alert('Select a contact or group first'); return; }
-
-  // optimistic UI
   appendOptimisticMessage({ from, text, time: new Date().toISOString() });
-  inputEl.disabled = true;
+  document.getElementById('composerInput').disabled = true;
 
-  // headers (include token if present)
-  const token = localStorage.getItem('token');
-  const headers = { 'Content-Type': 'application/json' };
-  if (token) headers['Authorization'] = 'Bearer ' + token;
-
-  try {
-    if (currentConversation.type === 'group') {
-      // Build ordered list of id candidates to try
-      const groupObj = currentConversation.full || {};
-      const rawCandidates = [
-        currentConversation.id,
-        groupObj.groupId,
-        groupObj.id,
-        groupObj._id
-      ].filter(Boolean).map(String);
-      const idCandidates = Array.from(new Set(rawCandidates)); // unique
-
-      let sent = false;
-      // try each candidate until success
-      for (const gid of idCandidates) {
-        try {
-          const url = `/api/groups/${encodeURIComponent(gid)}/message`;
-          const res = await fetch(url, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({ from, text })
-          });
-
-          if (res.ok) {
-            // success
-            toast('Message sent');
-            // refresh messages for the currently-open conversation (keep UI id)
-            await loadGroupMessages(currentConversation.id);
-            sent = true;
-            break;
-          } else {
-            // inspect body for "group not found" and continue to next candidate if so
-            let txt = await res.text().catch(()=>'');
-            try {
-              const parsed = JSON.parse(txt || '{}');
-              if (parsed && parsed.message && /group not found/i.test(parsed.message)) {
-                console.warn('group not found for id', gid, 'trying next id candidate');
-                // try next candidate
-                continue;
-              }
-            } catch(e){}
-            // other non-404-like failure: show message and stop trying
-            console.error('Group send failed for id', gid, res.status, txt);
-            toast('Send failed');
-            break;
-          }
-        } catch (err) {
-          console.error('Network error trying id', gid, err);
-          // try next candidate (network hiccup for this route)
-          continue;
-        }
-      }
-
-      if (!sent) {
-        toast('Send failed — group not found');
-      }
-    } else {
-      // direct message path (unchanged)
-      try {
-        const res = await fetch('/api/send', {
-          method:'POST',
-          headers,
-          body: JSON.stringify({ from, to: currentConversation.id, message: text })
-        });
-        if(res.ok){
-          toast('Message sent');
-          await loadDirectMessages(currentConversation.id);
-        } else {
-          toast('Send failed');
-          await loadDirectMessages(currentConversation.id);
-        }
-      } catch (e) {
-        toast('Send failed');
-        console.error(e);
-        await loadDirectMessages(currentConversation.id);
-      }
-    }
-  } finally {
-    inputEl.disabled = false;
-    inputEl.value = '';
+  if(currentConversation.type === 'group'){
+    try {
+      const res = await fetch('/groups/'+currentConversation.id+'/message', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ from, text })});
+      if(res.ok){ toast('Message sent'); await loadGroupMessages(currentConversation.id); }
+      else { toast('Send failed'); await loadGroupMessages(currentConversation.id); }
+    } catch (e) { toast('Send failed'); console.error(e); await loadGroupMessages(currentConversation.id); }
+  } else {
+    try {
+      const res = await fetch('/send', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ from, to: currentConversation.id, message: text })});
+      if(res.ok){ toast('Message sent'); await loadDirectMessages(currentConversation.id); }
+      else { toast('Send failed'); await loadDirectMessages(currentConversation.id); }
+    } catch (e) { toast('Send failed'); console.error(e); await loadDirectMessages(currentConversation.id); }
   }
+
+  document.getElementById('composerInput').disabled = false; document.getElementById('composerInput').value = '';
 }
-
-
 
 function appendOptimisticMessage(msg){
   const myName = selectedSender || 'you';
   const me = (msg.from === myName);
   const row = document.createElement('div'); row.className = 'msgRow ' + (me ? 'me' : 'other');
   const bubble = document.createElement('div'); bubble.className = 'bubble ' + (me ? 'me' : 'other');
-  const timeStr = formatMessageTime(new Date(msg.time));
-  bubble.innerHTML = `<div>${escapeHtml(msg.text || msg.message || '')}</div><div class="time">${timeStr}</div>`;
+  bubble.innerHTML = `<div>${escapeHtml(msg.text || msg.message || '')}</div><div class="time">${new Date(msg.time).toLocaleString()}</div>`;
   row.appendChild(bubble); messagesEl.appendChild(row); messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
@@ -1046,22 +768,25 @@ function confirmDeleteGroup(groupId, groupName){
 
 async function performDeleteGroup(groupId){
   try {
-    const res = await fetch('/api/groups/' + encodeURIComponent(groupId), { method: 'DELETE' });
-    if (!res.ok) {
-      toast('Delete failed on server');
-      console.error('Delete group failed', res.status, await res.text().catch(()=>''));
-      return;
-    }
-    // remove from local groups array
     const idx = groups.findIndex(g => String(g._id) === String(groupId) || String(g.id) === String(groupId));
-    if (idx >= 0) groups.splice(idx, 1);
+    const removed = idx >= 0 ? groups.splice(idx, 1)[0] : null;
     renderGroups(groups);
-    if (currentConversation && currentConversation.type === 'group' && (String(currentConversation.id) === String(groupId) || (currentConversation.full && String(currentConversation.full._id) === String(groupId)) ) ) {
+    if (currentConversation && currentConversation.type === 'group' && (String(currentConversation.id) === String(groupId) || (removed && String(removed._id) === String(currentConversation.id)) ) ) {
       currentConversation = null;
       messagesEl.innerHTML = '';
       chatTitle.textContent = 'Select a person or group';
       chatSubtitle.textContent = 'Select an item to start chatting';
       stopPolling();
+    }
+    const res = await fetch('/groups/' + encodeURIComponent(groupId), { method: 'DELETE' });
+    if (!res.ok) {
+      if (removed) {
+        groups.splice(idx, 0, removed);
+        renderGroups(groups);
+      }
+      toast('Delete failed on server');
+      console.error('Delete group failed', res.status, await res.text().catch(()=>'')); 
+      return;
     }
     toast('Group deleted');
   } catch (err) {
@@ -1172,31 +897,6 @@ function selectSender(name) {
 }
 window.refreshGroups = loadGroups;
 
-/* ---------- Real-Time Chat Integration ---------- */
-function openRealTimeChat() {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Please login first to use real-time chat');
-    return;
-  }
-
-  // Open chat widget with token as URL parameter
-  const chatUrl = `http://localhost:3001/chat-widget.html?token=${encodeURIComponent(token)}`;
-  window.open(chatUrl, 'RealTimeChat', 'width=400,height=600');
-}
-
-function openSecondChat() {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Please login first to use real-time chat');
-    return;
-  }
-
-  // Open second chat widget for testing
-  const chatUrl = `http://localhost:3001/chat-widget.html?token=${encodeURIComponent(token)}`;
-  window.open(chatUrl, 'RealTimeChat2', 'width=400,height=620,left=450');
-}
-
 // CLOSE MODALS BY CLICKING OUTSIDE
 document.addEventListener('click', function(e) {
   const groupModalBg = document.getElementById('modalBg');
@@ -1235,53 +935,26 @@ function renderMessage(msg){
   const bubble = document.createElement('div'); bubble.className = 'bubble ' + (me ? 'me' : 'other');
   const text = escapeHtml(msg.text || msg.message || '');
   const ts = msg.time ? new Date(msg.time) : new Date();
-  const timeStr = formatMessageTime(ts);
-  bubble.innerHTML = `<div>${text}</div><div class="time">${timeStr}</div>`;
+  bubble.innerHTML = `<div>${text}</div><div class="time">${ts.toLocaleString()}</div>`;
   row.appendChild(bubble); messagesEl.appendChild(row); messagesEl.scrollTop = messagesEl.scrollHeight;
 }
-
 
 /* polling helpers (basic placeholders â€“ adapt if you use start/stop) */
 function startPolling(){ /* optional: implement if you prefer setInterval toggles */ }
 function stopPolling(){ /* optional: implement if you prefer setInterval toggles */ }
 
-/* Robust login guard + username label */
-(function () {
-  // defensive token check: guards against 'null'/'undefined' strings and empty values
-  function hasValidToken() {
-    const t = localStorage.getItem('token');
-    if (!t) return false;
-    if (t === 'null' || t === 'undefined') return false;
-    if (typeof t !== 'string') return false;
-    if (t.length < 10) return false; // tolerate short dev tokens but avoid blank
-    return true;
-  }
-
-  if (!hasValidToken()) {
-    // avoid annoying modal alerts; redirect quietly
-    window.location.replace('login.html');
-    return;
-  }
-
-  // show username in the small left-brand area
-  const username = (localStorage.getItem('username') || '').trim();
-  if (username) {
-    // try to find the UI element that shows brand/username
-    const brandEls = document.querySelectorAll('.brand, .brand-wrap .brand');
-    if (brandEls && brandEls.length) {
-      // DO NOT modify the SMS brand
-// Instead update the actual username label only
-const userLabel = document.getElementById('usernameLabel');
-if (userLabel) userLabel.textContent = username;
-
-    }
-  }
-
-
-  // small helper used above
-  function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
-
-})();
 </script>
 </body>
 </html>
+<script>
+// simple auth redirect: requires token in localStorage
+(function () {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // not logged in — go to login
+      window.location.href = "/login.html";
+    }
+  } catch (e) { console.error(e); }
+})();
+</script>

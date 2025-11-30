@@ -2,12 +2,12 @@
 
 const GroupMessageSchema = new mongoose.Schema(
   {
-    groupId: { type: mongoose.Schema.Types.ObjectId, ref: 'Group', required: true },
-    senderId: { type: String, required: true },
+    groupId: { type: String, required: true },
+    from: { type: String, required: true },
     text: { type: String, default: '' },
-    attachments: { type: Array, default: [] },
+    time: { type: String, default: () => new Date().toISOString() },
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'groupmessages' }
 );
 
 module.exports = mongoose.model('GroupMessage', GroupMessageSchema);

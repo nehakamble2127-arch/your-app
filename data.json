@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "id": "eWVuvmnJz03MbEX-jZAob",
+      "name": "mohan",
+      "email": "mohanr@test",
+      "password": "$2b$10$ytf4KZA63TrSKLfSGjNj6.2LgbVNbVWOSSLnNZJBOB5N37uVNQlai",
+      "createdAt": "2025-11-29T09:24:14.054Z"
+    },
+    {
+      "id": "AmRrjA7_Ptp_nC-1rttUX",
+      "name": "mohan",
+      "email": "mohanr@test1",
+      "password": "$2b$10$vf/QH9A/ukvEpzz/LB.Tyu/7MoL6vgI/AeG5kmeZ34/R8EXQltIXO",
+      "createdAt": "2025-11-29T09:25:16.897Z"
+    }
+  ],
+  "groups": [
+    {
+      "_id": "4X8WQl9sxUWlPwxMCA49g",
+      "name": "test101",
+      "members": [
+        "mohan"
+      ],
+      "createdAt": "2025-11-29T09:07:42.845Z"
+    },
+    {
+      "_id": "H4CC4sMxn6A20Nl7H6QaC",
+      "name": "test101",
+      "members": [
+        "MOHAN",
+        "omkar",
+        "raj",
+        "sneha"
+      ],
+      "createdAt": "2025-11-29T08:53:21.938Z"
+    }
+  ],
+  "messages": [
+    {
+      "_id": "8ehxniujIuP2hN_i8FAdX",
+      "type": "direct",
+      "from": "mohan",
+      "to": "mohan",
+      "text": "hiii",
+      "time": "2025-11-29T09:26:02.672Z"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Login — SMS</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{--accent:#2b7cff;--muted:#666;}
+    body{font-family:Inter,Segoe UI,Arial,sans-serif;background:#f3f5f7;padding:24px}
+    .auth-container{width:360px;margin:60px auto;padding:28px;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.06)}
+    h2{text-align:center;margin:0 0 18px}
+    input{width:100%;padding:10px 12px;margin:8px 0;border-radius:6px;border:1px solid #ddd;box-sizing:border-box}
+    button{width:100%;padding:10px;border-radius:6px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+    .muted{color:var(--muted);text-align:center;margin-top:12px}
+    .error{color:#b00020;text-align:center;margin-top:8px;min-height:20px}
+    a{color:var(--accent)}
+  </style>
+</head>
+<body>
+  <div class="auth-container" role="main" aria-labelledby="logintitle">
+    <h2 id="logintitle">Login</h2>
+
+    <input id="email" type="email" placeholder="Email" autocomplete="email" required />
+    <input id="password" type="password" placeholder="Password" autocomplete="current-password" required />
+    <button id="loginBtn" type="button">Login</button>
+
+    <div class="error" id="err" aria-live="polite"></div>
+    <div class="muted">Don't have an account? <a href="signup.html">Signup</a></div>
+  </div>
+
+<script>
+  const errEl = document.getElementById('err');
+  function showError(msg) {
+    errEl.textContent = msg || '';
+    if (msg) setTimeout(()=> errEl.textContent = '', 5000);
+  }
+
+  // Email validation regex
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  async function doLogin() {
+    showError('');
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) return showError('Email and password are required');
+    if (!isValidEmail(email)) return showError('Please enter a valid email address');
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json().catch(()=> ({}));
+      if (!res.ok) {
+        const msg = (data && (data.message || data.error)) || 'Login failed';
+        return showError(msg);
+      }
+
+      // store token and user info
+      if (data.token) localStorage.setItem('token', data.token);
+      const user = data.user || data;
+      const uid = user && (user.id || user._id || user.userId) || '';
+      const uname = user && (user.name || user.username) || '';
+
+      if (uid) localStorage.setItem('userId', uid);
+      if (uname) localStorage.setItem('username', uname);
+      if (user) localStorage.setItem('user', JSON.stringify(user));
+
+      // redirect to app
+      window.location.href = '/index.html';
+    } catch (err) {
+      console.error('Login error', err);
+      showError('Network error — try again');
+    }
+  }
+
+  document.getElementById('loginBtn').addEventListener('click', doLogin);
+  ['email','password'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  });
+</script>
+</body>
+</html>

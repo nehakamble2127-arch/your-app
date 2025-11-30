@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "id": "A3YFSuqAdO-kIh1295ICj",
+      "name": "Mohan",
+      "email": "mohan@example.com",
+      "password": "$2b$10$iB43RO/VrKf6v/Xg3rWpeuEczWI6VfespskVdYiv4tGL7.TAtJigy",
+      "createdAt": "2025-11-29T06:44:35.727Z"
+    },
+    {
+      "id": "0xSmIQ3TcjLMpWBWGHsA7",
+      "name": "Mohanraja",
+      "email": "test@email",
+      "password": "$2b$10$mOjES7c02BuevFx5mjLyLulqBSmhyA4Lf3ww7e7AEwIwvwCc5ZpXC",
+      "createdAt": "2025-11-29T07:28:32.322Z"
+    },
+    {
+      "id": "el4NJj7E64SLXxRN9udBn",
+      "name": "mohanraja.0",
+      "email": "mohanrajan0805@gmail.com",
+      "password": "$2b$10$z/W8DnKMPGcK.awjHVYsHu36dQ5jydmiciv0JUntjBAOc9gLeB8re",
+      "createdAt": "2025-11-29T08:45:16.015Z"
+    }
+  ],
+  "groups": [
+    {
+      "_id": "VtEJO7aZXGBEbn4HZM0ow",
+      "name": "test",
+      "members": [
+        "mohan",
+        "MOHAN",
+        "omkar",
+        "raj",
+        "sneha"
+      ],
+      "createdAt": "2025-11-29T08:03:52.107Z"
+    },
+    {
+      "_id": "J4G_AixwUgtv5mJOGO_Rz",
+      "name": "group",
+      "members": [
+        "mohan",
+        "omkar",
+        "raj",
+        "sneha"
+      ],
+      "createdAt": "2025-11-29T07:58:07.361Z"
+    }
+  ],
+  "messages": [
+    {
+      "_id": "iM1Qn0yTkADw-AEAJH_P0",
+      "type": "direct",
+      "from": "userA_id",
+      "to": "userB_id",
+      "text": "hello",
+      "time": "2025-11-29T06:44:48.692Z"
+    }
+  ]
+}

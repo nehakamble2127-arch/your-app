@@ -1,18 +1,11 @@
-﻿const mongoose = require('mongoose');
+﻿// models/Message.js
+const mongoose = require('mongoose');
 
-const GroupSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    creatorId: { type: String, required: true },
-    participants: { type: [String], default: [] },
-    lastMessage: {
-      senderId: String,
-      text: String,
-      createdAt: Date,
-    },
-    lastUpdated: { type: Date, default: Date.now },
-  },
-  { timestamps: true }
-);
+const MessageSchema = new mongoose.Schema({
+  groupId: { type: mongoose.Schema.Types.ObjectId, ref: 'Group', index: true, required: false }, // optional for DMs
+  from: { type: String, required: true },
+  text: { type: String, required: true },
+  time: { type: Date, default: Date.now }
+}, { timestamps: true });
 
-module.exports = mongoose.model('Group', GroupSchema);
+module.exports = mongoose.model('Message', MessageSchema);
